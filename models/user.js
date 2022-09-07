@@ -19,7 +19,10 @@ const userSchema = Schema({
     type: String,
     default: null,
   },
-});
+  avatarURL:{
+    type:String
+  }
+},{ timestamps: true });
 
 const User = model("user", userSchema);
 
