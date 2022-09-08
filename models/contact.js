@@ -19,7 +19,7 @@ const contactSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-});
+}, { timestamps: true });
 
 const Contact = model("contact", contactSchema);
 
