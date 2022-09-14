@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 require("dotenv").config();
 const { User } = require("../../models/user");
+const { requestError } = require("../../helpers");
 
 const { SECRET_KEY } = process.env;
 
@@ -11,15 +12,15 @@ const login = async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(401).json({
-      message: "Email or password is wrong",
-    });
+    throw requestError(401, "Email or password is wrong");
   }
   const passCompare = bcrypt.compareSync(password, user.password);
   if (!passCompare) {
-    res.status(401).json({
-      message: "Email or password is wrong",
-    });
+    throw requestError(401, "Email or password is wrong");
+  }
+
+  if (!user.verify) {
+    throw requestError(400, "Email not verified");
   }
 
   const payload = {
